@@ -1,7 +1,6 @@
 "use client"
 
 // Import necessary React hooks and Next.js utilities
-import { redirect } from "next/navigation";
 import { useState, use } from "react"
 import { useRouter } from "next/navigation"
 import useOrders from "@/hooks/useOrders"
@@ -119,7 +118,7 @@ export default function OrderEditPage({ params }) {
    * Discards changes and navigates back to the orders list
    */
   const handleCancel = () => {
-    router.push("/")
+    router.push("/Orders")
   }
 
   /**

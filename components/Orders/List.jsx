@@ -1,11 +1,11 @@
 "use client"
 
-import useOrders from "@/hooks/useOrders";
-import useVerifyPassword from "@/hooks/useVerifyPassword";
-import { useRouter } from "next/navigation";
-import { Trash, Edit } from "lucide-react";
-import { PasswordDialog, ConfirmDialog } from "../Layouts/Dialogs";
-import { useEffect, useState } from "react"
+import useOrders from "@/hooks/useOrders"
+import useVerifyPassword from "@/hooks/useVerifyPassword"
+import { useRouter } from "next/navigation"
+import { Trash, Edit } from "lucide-react"
+import { PasswordDialog, ConfirmDialog } from "../Layouts/Dialogs"
+import { useState } from "react"
 import OrderDetails from "./Details"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -26,58 +26,53 @@ const styles = {
   totalValue: "text-lg font-bold text-foreground",
   dialogContent: "max-w-2xl max-h-[80vh] overflow-y-auto",
   dialogTitle: "flex items-center w-full gap-3 pr-8",
-  deleteButton: "bg-red-600 text-white hover:bg-red-700"
+  deleteButton: "bg-red-600 text-white hover:bg-red-700",
 }
 
 export default function OrdersList({ orders = [] }) {
-  const router = useRouter();
+  const router = useRouter()
   const { deleteOrder } = useOrders()
   const { verifyPassword } = useVerifyPassword()
 
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [orderDialog, setOrderDialog] = useState(false)
 
-  const [passwordDialog, setPasswordDialog] = useState(false);
-  const [actionType, setActionType] = useState(""); // "edit" or "delete"
+  const [passwordDialog, setPasswordDialog] = useState(false)
+  const [actionType, setActionType] = useState("") // "edit" or "delete"
 
-  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState(false)
 
   const handleClick = (name, params = {}) => {
     switch (name) {
       case "order":
         setSelectedOrder(params.order)
         setOrderDialog(true)
-        break;
+        break
 
       case "password":
-        setActionType(params.type);
-        setPasswordDialog(true);
-        break;
+        setActionType(params.type)
+        setPasswordDialog(true)
+        break
     }
   }
 
-  useEffect(() => {
-    console.log(orders);
-  }, [orders])
-
   const handleConfirm = async (password) => {
-    // Validate password here
-    if (!password) alert("Password Empty");
-
-    else {
-      const ok = await verifyPassword(password);
+    if (!password) {
+      alert("Password Empty")
+    } else {
+      const ok = await verifyPassword(password)
       if (ok) {
-        if (actionType === "edit") router.push(`/Orders/${selectedOrder.id}`);
-        else if (actionType === "delete") setConfirmDialog(true);
+        if (actionType === "edit") router.push(`/Orders/${selectedOrder.id}`)
+        else if (actionType === "delete") setConfirmDialog(true)
 
-        setPasswordDialog(false);
-        setActionType("");
-
+        setPasswordDialog(false)
+        setActionType("")
       } else {
-        alert("Wrong password!");
+        alert("Wrong password!")
       }
-    };
+    }
   }
+
   if (orders.length === 0) {
     return (
       <div className={styles.empty}>
@@ -120,15 +115,17 @@ export default function OrdersList({ orders = [] }) {
         <DialogContent className={styles.dialogContent}>
           <DialogHeader>
             <div className={styles.dialogTitle}>
-              <DialogTitle>
-                #{selectedOrder?.id}
-              </DialogTitle>
+              <DialogTitle>#{selectedOrder?.id}</DialogTitle>
 
               <Button size="sm" onClick={() => handleClick("password", { type: "edit" })}>
                 <Edit className="w-4 h-4" />
               </Button>
 
-              <Button size="sm" className={styles.deleteButton} onClick={() => handleClick("password", { type: "delete" })}>
+              <Button
+                size="sm"
+                className={styles.deleteButton}
+                onClick={() => handleClick("password", { type: "delete" })}
+              >
                 <Trash className="w-4 h-4" />
               </Button>
             </div>
@@ -141,16 +138,14 @@ export default function OrdersList({ orders = [] }) {
         </DialogContent>
       </Dialog>
 
-      <PasswordDialog
-        open={passwordDialog}
-        onClose={() => setPasswordDialog(false)}
-        onConfirm={handleConfirm}
-      />
+      <PasswordDialog open={passwordDialog} onClose={() => setPasswordDialog(false)} onConfirm={handleConfirm} />
 
       <ConfirmDialog
         open={confirmDialog}
         onClose={() => setConfirmDialog(false)}
-        onConfirm={() => { deleteOrder(selectedOrder.id); }}
+        onConfirm={() => {
+          deleteOrder(selectedOrder.id)
+        }}
         message="Are you sure you want to delete this order?"
       />
     </>

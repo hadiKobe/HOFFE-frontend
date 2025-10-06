@@ -13,14 +13,14 @@ export default function OrderDetails({ items = [] }) {
       </div>
     )
   }
+
   return (
     <div className={styles.list}>
-      
       {items.map((item) => (
         <OrderItem
-          key={item}
-          id={item}
-          name={item}
+          key={item.id}
+          id={item.id}
+          name={item.name}
           price={item.price || 0}
           quantity={item.quantity || 1}
           note={item.note || ""}
@@ -29,4 +29,3 @@ export default function OrderDetails({ items = [] }) {
     </div>
   )
 }
-
