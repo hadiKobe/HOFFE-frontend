@@ -78,9 +78,9 @@ export default function Cart({ cartItems, onUpdateQuantity, onRemoveItem, totalD
 
                <div className={styles.cartItems}>
                   {cartItems.map((item) => (
-                     <div key={item.id} className={styles.cartItem}>
+                     <div key={`${item.id} - ${item.selectedFlavor}`} className={styles.cartItem}>
                         <div className={styles.itemHeader}>
-                           <h3 className={styles.itemName}>{item.name}</h3>
+                           <h3 className={styles.itemName}>{item.name} {item?.selectedFlavor}</h3>
                            <button onClick={() => onRemoveItem(item.id)} className={styles.removeButton}>
                               Remove
                            </button>
@@ -96,7 +96,7 @@ export default function Cart({ cartItems, onUpdateQuantity, onRemoveItem, totalD
                               <span className={styles.label}>Quantity</span>
                               <div className={styles.quantityControls}>
                                  <button
-                                    onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                                    onClick={() => onUpdateQuantity(item.id, item.selectedFlavor, item.quantity - 1)}
                                     className={styles.quantityButton}
                                  >
                                     -
